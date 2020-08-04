@@ -1,0 +1,25 @@
+- name: Ensure MySQL users are present.
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:USAGE') }}"
+    state: "{{ item.state | default('present') }}"
+    append_privs: "{{ item.append_privs | default('no') }}"
+    encrypted: "{{ item.encrypted | default('no') }}"
+  with_items: "{{ mysql_users }}"
+  no_log: true
+
+- name: Ensure galera user exists on MaeiaDB.
+  mysql_user:
+    name: "{{ item.name }}"
+    host: '%'
+    #login_host: '%'
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:ALL,GRANT') }}"
+    state: present
+  with_items: "{{ mariadb_galera_user }}"
+  no_log: true
+  when:
+    - mariadb_galera_cluser | default(false)
+
