@@ -1,4 +1,4 @@
-# Ansible Packages Role
+# Ansible MySQL Role
 Role for installing, removing and updating packages
 ## Requirements
 Ansible version: 2.9
